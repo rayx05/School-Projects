@@ -1,0 +1,64 @@
+#BUS 211A: Foundation of Data Analytics; Final Project
+--- SQL  
+CREATE TABLE cannabis_business (
+license_type TEXT, 
+business_name TEXT, 
+establishment_city TEXT, 
+establishment_zipcode TEXT, --- zipcode has to be text because we do not compute with it 
+county TEXT, 
+latitude TEXT, 
+longitute TEXT, 
+CONSTRAINT pr RIMARY KEY (business_name) 
+); 
+
+SELECT COUNT(*)
+FROM licenses
+WHERE license_type = 'Marijuana Retailer'; --- count how many retailers there are 
+
+SELECT * 
+FROM licenses
+WHERE license_type = 'Marijuana Retailer'; --- extract the information of every retailer 
+
+SELECT *
+INTO OUTFILE 'relatiers_selected.csv'
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+FROM licenses
+WHERE license_type = 'Marijuana Retailer'; --- export a csv file of every retailed (cleaned data) 
+
+SELECT county, COUNT(*) AS count_per_county
+FROM licenses
+WHERE license_type = 'Marijuana Retailer'
+GROUP BY county;  --- shows us how many retailers are there in each county 
+
+SELECT county, COUNT(*) AS count_per_county
+INTO OUTFILE 'county_retailer_count.csv'
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+FROM licenses
+WHERE license_type = 'Marijuana Retailer'
+GROUP BY county;
+
+
+#R 
+#regression 1: population and number of retailers 
+regression1 = lm (dipso_count ~ 2022_population, data=data)
+
+coefficients = coef(regression1)
+print(coefficients)
+
+#regression 2: population / retailer ratio and median household 
+regression2 = lm (popu_dispo_ratio ~ Median.Household.Income, data = data) 
+coefficient2 = coef (regression2) 
+print (coefficient2) 
+
+#regression3: population . retailer ratio and trump's vote 
+regression3 = lm (popu_dispo_ratio ~ Trump.Rate, data = data) 
+coefficient3 = coef (regression3) 
+print (coefficient3) 
+
+
+
+
