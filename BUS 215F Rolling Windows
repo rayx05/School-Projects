@@ -1,0 +1,42 @@
+# Fall 2023, BUS 215F, Rolling Window 
+# Rolling Window BUS 215F
+again = 'y'
+while again == 'y':
+    ws = int(input('enter window size:')) #ask for window size 
+    if ws > 254:
+        print ('invalid input: window size greater than file contains')
+        again = input ('again? (y/n)')
+    
+    elif ws <= 254:
+        
+        def max_generator (ws):          #show maximum
+            return df.rolling(ws).max()
+        max_window = max_generator(ws)
+        print ("maximums of the window size of", ws, 'are:')
+        print (max_window)
+        
+        def min_generator(ws):          #show minimum 
+            return df.rolling(ws).min()
+        min_window = min_generator(ws)
+        print ('minimums of the window size of', ws, 'are:')
+        print (min_window)
+        
+        def mean_generator(ws):        #show mean
+            return df.rolling(ws).mean()
+        mean_window = mean_generator(ws)
+        print ('means of the window size of',ws,'are:')
+        print (mean_window)
+        
+        def upper_band(ws):      #show upper band of bollinger bands
+            return df.rolling(ws).mean() + 2*df.rolling(ws).std()
+        upper_band_window = upper_band(ws)
+        print ('upper bands of the bollinger bands are:')
+        print (upper_band_window)
+        
+        def lower_band(ws):   #show lower band of bollinger bands
+            return df.rolling(ws).mean() - 2*df.rolling(ws).std()
+        lower_band_window = lower_band(ws)
+        print ('lower bands of the bollinger bands are:')
+        print (lower_band_window)
+        
+        again = input('again? (y/n)')
