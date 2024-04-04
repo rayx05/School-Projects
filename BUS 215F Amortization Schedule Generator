@@ -1,0 +1,90 @@
+'''
+BUS 215F: Python and Application to Business Analytics 
+Amortization Schedule Generator
+'''
+import pandas as pd
+
+again = 'y'
+while again == "y":
+    #the 4 inputs from user :
+    p = int (input('enter the principal: ')) #principal 
+    r = float (input('enter the annual interest rate (0.01 if it is 1%):')) #interest rate
+    mep = float(input('enter minimal expected payment:')) #minimal expected payment
+    ep = float(input('enter extra payment:')) #extra payment 
+    
+    def payment_schedule_generator(p,r,mep,ep): #make the schedule
+        schedule = []                  #create an empty table 
+        month = 0 
+        while True:                   #fill in the content
+            month += 1
+            begin_p = p
+            payment = mep 
+            interest = round ((p*r)/12,2)
+            extra_payment = ep 
+            p_applied = payment + extra_payment - interest 
+            end_p = begin_p - p_applied 
+            p = end_p
+            schedule.append({
+                "Month": month,
+                "Begin P": begin_p,
+                "Payment": payment,
+                "Interest": interest,
+                "Extra Payment": extra_payment,
+                "P Applied": p_applied, 
+                "End P": end_p
+                })
+            
+            if begin_p < payment:
+                break
+         
+        return pd.DataFrame(schedule)
+    
+    
+    payment_shcedule = payment_schedule_generator(p,r,mep,ep)
+    print ('your payment schedule is:')
+    print (payment_shcedule)
+    
+    def total_payment_calculator(p,r,mep,ep):
+        month = 0 
+        total_payment = 0
+        while True:                   
+            month += 1
+            begin_p = p
+            payment = mep
+            total_payment += mep
+            interest = round ((p*r)/12,2)
+            extra_payment = ep 
+            p_applied = payment + extra_payment - interest 
+            end_p = begin_p - p_applied 
+            p = end_p
+            
+            if begin_p < payment:
+                break
+            
+        return total_payment
+        
+    
+    payment_total = total_payment_calculator(p,r,mep,ep)
+    print ('your total payment is', round(payment_total, 2))
+    
+    def time_calculator(p,r,mep,ep):
+        month = 0
+        while True:                   
+            month += 1
+            begin_p = p
+            payment = mep
+            interest = round ((p*r)/12,2)
+            extra_payment = ep 
+            p_applied = payment + extra_payment - interest 
+            end_p = begin_p - p_applied 
+            p = end_p
+            
+            if begin_p < payment:
+                break
+        return month
+    total_month = int(time_calculator(p,r,mep,ep))
+    year_count = round(total_month/12, 2)
+    print ('the total time is', year_count, 'year(s)')
+        
+    
+    again = input("again(y/n)?")
